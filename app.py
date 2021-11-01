@@ -11,8 +11,6 @@ app.config['UPLOAD_FOLDER'] = './static/uploads/'
 model = load_model('Mask Classification Model_1.npy')
 app.secret_key = "f!#&^rty(*wjf(ijf)!#(*!t(h*!%(*&@)"
 class_dict = {0: 'No Mask', 1: 'With Mask'}
-app.permanent_session_lifetime = False
-
 def predict_label(img_path):
     loaded_img = load_img(img_path, target_size=(64, 64))
     img_array = img_to_array(loaded_img)
