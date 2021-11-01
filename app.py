@@ -22,8 +22,7 @@ def index():
     if request.method == 'POST':
         if request.files:
             #So previously uploaded files are not   
-            if 'image' in session:
-                os.remove(os.path.join(app.config['UPLOAD_FOLDER'], session['image']))
+
             image = request.files['image']
             img_path = os.path.join(app.config['UPLOAD_FOLDER'], image.filename)
             image.save(img_path)
