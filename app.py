@@ -21,14 +21,10 @@ def predict_label(img_path):
 def index():
     if request.method == 'POST':
         if request.files:
-            #So previously uploaded files are not   
-            if 'image' in session:
-                os.remove(os.path.join(app.config['UPLOAD_FOLDER'], session['image']))
             image = request.files['image']
             img_path = os.path.join(app.config['UPLOAD_FOLDER'], image.filename)
             image.save(img_path)
             prediction = predict_label(img_path)
-            session['image'] = image.filename
             return render_template('index.html', uploaded_image=image.filename, prediction=prediction)
 
     return render_template('index.html')
