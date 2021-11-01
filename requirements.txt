@@ -1,5 +1,5 @@
-cv2
+cv2==4.2.0
 numpy
 flask
 os
-gunicorn
+gunicorn==20.1.0
