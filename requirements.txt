@@ -1,5 +1,4 @@
-opencv-python
+opencv-python==4.5.2.54
 numpy
 flask
-os
 gunicorn==20.1.0
