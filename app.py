@@ -41,5 +41,10 @@ def send_uploaded_image(filename=''):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 
+@app.route('/images')
+def show_main_page():
+    return render_template('products.html')
+
+
 if __name__ == '__main__':
     app.run(debug=True)
