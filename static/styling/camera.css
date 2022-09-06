@@ -3,3 +3,7 @@
     height: 240px;
     border: 1px solid black;
 }
+
+input {
+    border: 1px solid black;    
+}

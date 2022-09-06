@@ -1,5 +1,4 @@
-from flask import Flask, render_template, request, send_from_directory, session
-import os
+from flask import Flask, render_template, request, send_from_directory, redirect, url_for
 from data_prep import *
 
 """
@@ -8,7 +7,7 @@ Template from: https://github.com/alfanme/dts-deployment-ann
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = './static/uploads/'
-model = load_model('Mask Classification Model_1.npy')
+# model = load_model('Mask Classification Model_1.npy')
 app.secret_key = "f!#&^rty(*wjf(ijf)!#(*!t(h*!%(*&@)"
 class_dict = {0: 'No Mask', 1: 'With Mask'}
 
@@ -20,21 +19,24 @@ def predict_label(img_path):
     return class_dict[int(predicted_bit)]
 
 
-@app.route('/', methods=['GET', 'POST'])
+# @app.route('/', methods=['GET', 'POST'])
+# def index():
+#     if request.method == 'POST':
+#         if request.files:
+#             # So previously uploaded files are not
+
+#             image = request.files['image']
+#             img_path = os.path.join(app.config['UPLOAD_FOLDER'], image.filename)
+#             image.save(img_path)
+#             prediction = predict_label(img_path)
+#             session['image'] = image.filename
+#             return render_template('index.html', uploaded_image=image.filename, prediction=prediction)
+
+#     return render_template('index.html')
+
+@app.route('/')
 def index():
-    if request.method == 'POST':
-        if request.files:
-            # So previously uploaded files are not
-
-            image = request.files['image']
-            img_path = os.path.join(app.config['UPLOAD_FOLDER'], image.filename)
-            image.save(img_path)
-            prediction = predict_label(img_path)
-            session['image'] = image.filename
-            return render_template('index.html', uploaded_image=image.filename, prediction=prediction)
-
-    return render_template('index.html')
-
+    return render_template('front_page.html')
 
 @app.route('/display/<filename>')
 def send_uploaded_image(filename=''):
@@ -50,6 +52,18 @@ def show_main_page():
         f.save(f.filename)
         print("here")
 
+@app.route('/process_trans_type', methods=["POST", "GET"])
+def process_user_transformation_choice():
+    transform_type = request.form['transform-type']
+    return redirect(url_for(transform_type))
+
+@app.route('/enchancement')
+def enchancement():
+    return render_template("upload_photo.html")
+
+@app.route('/neural')
+def neural():
+    return render_template("neural_styles.html")
 
 if __name__ == '__main__':
     app.run(debug=True)
