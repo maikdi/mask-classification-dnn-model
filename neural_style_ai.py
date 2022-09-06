@@ -220,15 +220,15 @@ def image_loader(image_name):
     image = loader(image).unsqueeze(0)
     return image.to(device, torch.float)
 
-style_1 = image_loader(style_path+"post-impressionism.jpg")
-style_1 = image_loader(style_path+"fauvism.jpeg")
-style_1 = image_loader(style_path+"cubism.jpg")
-style_1 = image_loader(style_path+"destijl.jpeg")
-style_1 = image_loader(style_path+"pop-art.jpg")
-style_1 = image_loader(style_path+"vangogh.png")
-style_1 = image_loader(style_path+"kandinsky.jpeg")
-style_1 = image_loader(style_path+"picasso.jpeg")
-style_1 = image_loader(style_path+"klimt.jpeg")
+# style_1 = image_loader(style_path+"post-impressionism.jpg")
+# style_1 = image_loader(style_path+"fauvism.jpeg")
+# style_1 = image_loader(style_path+"cubism.jpg")
+# style_1 = image_loader(style_path+"destijl.jpeg")
+# style_1 = image_loader(style_path+"pop-art.jpg")
+# style_1 = image_loader(style_path+"vangogh.png")
+# style_1 = image_loader(style_path+"kandinsky.jpeg")
+# style_1 = image_loader(style_path+"picasso.jpeg")
+# style_1 = image_loader(style_path+"klimt.jpeg")
 
 
 # REPLACE THIS WITH WEBCAM IMAGE
