@@ -18,13 +18,15 @@
 >
     <div id="options" class="flex flex-row">
         <label>
+            <span>Image Enchacement</span>
             <input type="radio" name="transform-type" value="enchancement" checked>
-            <img src="https://via.placeholder.com/40x60/0bf/fff&text=A" alt="Option 1">
+            <img src="{{ url_for('static', filename='images/index/enchance.jpg') }}" alt="Image Enchacement">
         </label>
         
         <label>
+            <span>Neural Style Transfer</span>
             <input type="radio" name="transform-type" value="neural">
-            <img src="https://via.placeholder.com/40x60/b0f/fff&text=B" alt="Option 2">
+            <img src="{{ url_for('static', filename='images/index/style.jpg') }}" alt="Neural Style Transfer">
         </label>
     </div>
     <div id="submit" class="flex flex-col">

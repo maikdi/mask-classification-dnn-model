@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, send_from_directory, redirect, url_for
-from data_prep import *
+from neural_style_ai import *
+import os
 
 """
 Template from: https://github.com/alfanme/dts-deployment-ann
@@ -36,7 +37,7 @@ def predict_label(img_path):
 
 @app.route('/')
 def index():
-    return render_template('front_page.html')
+    return render_template('index.html')
 
 @app.route('/display/<filename>')
 def send_uploaded_image(filename=''):
@@ -63,7 +64,14 @@ def enchancement():
 
 @app.route('/neural')
 def neural():
-    return render_template("neural_styles.html")
+    all_styles = os.listdir('./static/images/examples')
+    print(all_styles)
+    all_style_paths = []  # Had to make this because flask cannot format string in html properly
+    for i in range(len(all_styles)):
+        all_style_paths.append(url_for('static', filename=f"images/examples/{all_styles[i]}"))
+        all_styles[i] = all_styles[i].split('.')[0]
+
+    return render_template("neural_styles.html", all_style_paths=all_style_paths, all_styles=all_styles)
 
 if __name__ == '__main__':
     app.run(debug=True)
