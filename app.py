@@ -41,9 +41,14 @@ def send_uploaded_image(filename=''):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 
-@app.route('/images')
+@app.route('/images', methods=['GET', 'POST'])
 def show_main_page():
-    return render_template('products.html')
+    if request.method == 'GET':
+        return render_template('products.html')
+    if request.method == 'POST':
+        f = request.files['webcam']
+        f.save(f.filename)
+        print("here")
 
 
 if __name__ == '__main__':
