@@ -11,6 +11,8 @@ shutter.autoplay = true;
 shutter.src = navigator.userAgent.match(/Chrome/) ? 'shutter.ogg' : 'shutter.mp3';
 
 function take_snapshot() {
+    document.getElementById('snapshot').disabled = true;
+    document.getElementById('snapshot').value = "Please Wait";
     // play sound effect
     shutter.play();
 
