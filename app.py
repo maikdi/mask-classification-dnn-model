@@ -39,6 +39,7 @@ def predict_label(img_path):
 def index():
     return render_template('index.html')
 
+
 @app.route('/display/<filename>')
 def send_uploaded_image(filename=''):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
@@ -53,14 +54,17 @@ def show_main_page():
         f.save(f.filename)
         print("here")
 
+
 @app.route('/process_trans_type', methods=["POST", "GET"])
 def process_user_transformation_choice():
     transform_type = request.form['transform-type']
     return redirect(url_for(transform_type))
 
+
 @app.route('/enchancement')
 def enchancement():
     return render_template("upload_photo.html")
+
 
 @app.route('/neural')
 def neural():
@@ -72,6 +76,7 @@ def neural():
         all_styles[i] = all_styles[i].split('.')[0]
 
     return render_template("neural_styles.html", all_style_paths=all_style_paths, all_styles=all_styles)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
