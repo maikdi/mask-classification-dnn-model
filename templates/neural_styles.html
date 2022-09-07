@@ -8,15 +8,14 @@
 <span id="header">Choose Your Style</span>
 <form
 action="/render_style"
-method="post"
-enctype="multipart/form-data"
+method="get"
 >
 <div id="options" class="grid-container">
     {% for i in range(all_style_paths | length) %}
     <div>
         <label>
             <span>{{all_styles[i]}}</span>
-            <input type="radio" name="transform-type" value="{{all_style_paths[i]}}">
+            <input type="radio" name="neural-style" value="{{all_style_paths[i]}}">
             <img src="{{ all_style_paths[i] }}" alt="">
         </label>
     </div>
