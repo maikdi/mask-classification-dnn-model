@@ -1,16 +1,18 @@
 from flask import Flask, render_template, request, send_from_directory, redirect, url_for
 from neural_style_ai import *
+from flask_socketio import SocketIO
 import os
 
 """
 Template from: https://github.com/alfanme/dts-deployment-ann
 """
-
+async_mode = None
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = './static/uploads/'
 # model = load_model('Mask Classification Model_1.npy')
 app.secret_key = "f!#&^rty(*wjf(ijf)!#(*!t(h*!%(*&@)"
 class_dict = {0: 'No Mask', 1: 'With Mask'}
+socket_ = SocketIO(app, async_mode=async_mode)
 
 
 def predict_label(img_path):
@@ -48,7 +50,8 @@ def send_uploaded_image(filename=''):
 @app.route('/images', methods=['GET', 'POST'])
 def show_main_page():
     if request.method == 'GET':
-        return render_template('products.html')
+        return render_template('products.html', sync_mode=socket_.async_mode)
+
     if request.method == 'POST':
         f = request.files['webcam']
         f.save(f.filename)
