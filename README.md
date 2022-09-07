@@ -30,6 +30,7 @@ The model is saved with file name "Mask Classification Model_1.npy" (yes i used 
    `pip install -r requirements.txt`
 1. Jalankan API menggunakan perintah\
    `python app.py`
+1. Untuk pengguna MAC M1 set `device = "mps"` dan `device = "cuda"` untuk intel+cuda di `neural_style_ai.py` line 188.
 
 ## Akses melalui Website
 
