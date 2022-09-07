@@ -50,7 +50,7 @@ def send_uploaded_image(filename=''):
 @app.route('/images', methods=['GET', 'POST'])
 def show_main_page():
     if request.method == 'GET':
-        return render_template('products.html', sync_mode=socket_.async_mode)
+        return render_template('upload_photo.html', sync_mode=socket_.async_mode)
 
     if request.method == 'POST':
         f = request.files['webcam']

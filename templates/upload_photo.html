@@ -6,6 +6,8 @@
 
 {% block content %}
 <div id="my_camera">
+<div id="my_test">
+
     
 </div>
     <input type=button value="Take Snapshot" onClick="take_snapshot()">
@@ -15,4 +17,6 @@
 {% block script %}
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
 <script type="text/javascript" src="{{ url_for('static', filename='script/camera.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='script/con_web_soc.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.2/socket.io.js" integrity="sha512-VJ6+sp2E5rFQk05caiXXzQd1wBABpjEj1r5kMiLmGAAgwPItw1YpqsCCBtq8Yr1x6C49/mTpRdXtq8O2RcZhlQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 {% endblock %}
