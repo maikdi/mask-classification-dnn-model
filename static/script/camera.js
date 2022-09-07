@@ -8,7 +8,7 @@ Webcam.attach('#my_camera');
 // preload shutter audio clip
 var shutter = new Audio();
 shutter.autoplay = true;
-shutter.src = navigator.userAgent.match(/Firefox/) ? 'shutter.ogg' : 'shutter.mp3';
+shutter.src = navigator.userAgent.match(/Chrome/) ? 'shutter.ogg' : 'shutter.mp3';
 
 function take_snapshot() {
     // play sound effect
@@ -17,12 +17,22 @@ function take_snapshot() {
     // take snapshot and get image data
     Webcam.snap(function (data_uri) {
         // display results in page
-        document.getElementById('results').innerHTML = '<img src="' + data_uri + '"/>';
+        // document.getElementById('results').innerHTML = '<img src="'+data_uri+'"/>';
+        var chosen_style = document.getElementById('neural-style').value
+        const formData = new FormData();
+        formData.append("webcam", data_uri);
+        formData.append("neural-style", chosen_style)
 
-        Webcam.upload( data_uri, 'images', function(code, text) {
-			// Upload complete!
-			// 'code' will be the HTTP response code from the server, e.g. 200
-			// 'text' will be the raw response content
-		} );
+        // After snap, image will be sent along with the desired style
+        // I'm not using Webcam.upload since it only uploads the image without any other data.
+        fetch('/render_style', {
+            method: 'POST',
+            body: formData,
+            redirect: 'follow'
+        }).then((response)=>{         
+            if(response.redirected){
+                window.location.href = response.url;
+            }
+        }) 
     });
 }

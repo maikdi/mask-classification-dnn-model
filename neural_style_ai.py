@@ -173,7 +173,7 @@ def run_style_transfer(cnn, normalization_mean, normalization_std,
                 print('Style Loss : {:4f} Content Loss: {:4f}'.format(
                     style_score.item(), content_score.item()))
                 print()
-                plt.figure()
+                # plt.figure()
                 imshow(input_img)
             return style_score + content_score
 
@@ -232,7 +232,6 @@ def image_loader(image_name):
 
 
 # REPLACE THIS WITH WEBCAM IMAGE
-# content_img = image_loader(content_path+"yozef.jpg")
 
 unloader = transforms.ToPILImage()  # reconvert into PIL image
 
@@ -242,19 +241,21 @@ def imshow(tensor, title=None):
     image = tensor.cpu().clone()  # we clone the tensor to not do changes on it
     image = image.squeeze(0)      # remove the fake batch dimension
     image = unloader(image)
-    plt.imshow(image)
+    # plt.imshow(image)
     if title is not None:
         plt.title(title)
-    plt.pause(0.001) # pause a bit so that plots are updated
+    # plt.pause(0.001) # pause a bit so that plots are updated
 
 
-def render_all_image():
-    style_img = transforms.Resize(content_img.shape[2:])(style8_img)
+def render_all_image(chosen_style, image_path):
+    content_img = image_loader(image_path)
+    chosen_style = image_loader('.'+chosen_style)
+    style_img = transforms.Resize(content_img.shape[2:])(chosen_style)
     assert style_img.size() == content_img.size(), \
     "we need to import style and content images of the same size"
 
     input_img = content_img.clone()
-    plt.figure()
+    # plt.figure()
     imshow(input_img, title='Input Image')
 
     start = time.time()
@@ -262,10 +263,19 @@ def render_all_image():
                                 content_img, style_img, input_img)
     end = time.time()
 
-    plt.figure()
+    # plt.figure()
 
     imshow(output, title='Output Image')
     # sphinx_gallery_thumbnail_number = 4
     plt.ioff()
-    plt.show()
+    # plt.show()
     print('time',end-start)
+
+    # Save the image
+    fig = plt.figure(frameon=False)
+    ax = plt.Axes(fig, [0., 0., 1., 1.])
+    ax.set_axis_off()
+    fig.add_axes(ax)
+
+    plt.imshow(np.rot90(input_img.detach().to("cpu").numpy()[0].T), origin="lower")
+    plt.savefig("./static/images/results/neural.jpg", bbox_inches="tight", format="jpg")
