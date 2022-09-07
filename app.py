@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, send_from_directory, redirect
 import neural_style_ai as nst_ai
 import os
 import base64, io
+import qrcode
 
 """
 Template from: https://github.com/alfanme/dts-deployment-ann
@@ -92,8 +93,21 @@ def show_rendered_image():
 
 @app.route('/render_result')
 def render_result():
-    result_path = url_for('static', filename='images/results/neural.jpg') 
-    return render_template("neural_results.html", result_path=result_path)
+    result_path = url_for('static', filename='images/results/neural.jpg')
+    qr_path = url_for('static', filename='images/results/qr_results.png')
+    #Creating an instance of qrcode
+    qr = qrcode.QRCode(
+            version=1,
+            box_size=10,
+            border=5)
+    qr.add_data(request.url_root + result_path)
+    print(request.url_root)
+    print(request.url_root + result_path)
+    qr.make(fit=True)
+    img = qr.make_image(fill='black', back_color='white')
+    img.save('./static/images/results/qr_results.png')
+    
+    return render_template("neural_results.html", result_path=result_path, qr_path=qr_path)
 
 if __name__ == '__main__':
     app.run(debug=True)
