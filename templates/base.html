@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
+            rel="stylesheet"
+        />
+        <!-- In case we need a specific stylesheet for a specific page -->
+        {% block stylesheet %}
+        {% endblock %}
+        <title>IBDA Open House Project</title>
+    </head>
+    <body>
+        <section
+            class="
+                flex
+                justify-center
+                items-center
+                w-screen
+                h-screen
+                bg-indigo-500
+            "
+        >
+            <main
+                class="
+                    flex flex-col
+                    justify-center
+                    items-center
+                    p-16
+                    bg-white
+                    rounded-lg
+                "
+            >
+            <!-- This will ensure that all pages will have a consistent layout and styling -->
+            {% block content %}
+            {% endblock %}
+            </main>
+        </section>
+    <!-- In case we need a specific Javascript Script for only a specific page -->
+    {% block script %}
+    {% endblock %}
+    </body>
+</html>
