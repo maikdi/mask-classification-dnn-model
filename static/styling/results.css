@@ -1,0 +1,12 @@
+h1 {
+    font-weight: bold;
+    font-size: large;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 3px;
+    text-align: center;
+    place-items: center;
+}

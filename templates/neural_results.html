@@ -1,13 +1,19 @@
 {% extends "base.html" %}
 
 {% block stylesheet %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styling/results.css') }}">
 {% endblock %}
 
 {% block content %}
-<h1>Neural Style Transfer results should be shown here</h1>
-<div>
-    <img src="{{result_path}}" alt="">
+<div class="grid-container">
+    <div>
+        <h1>Here is the end result of the Neural Style Transfer</h1>
+        <img src="{{result_path}}" alt="" width="480">
+    </div>
+    <div>
+        <h1>You can download your image here!</h1>
+        <img src="{{qr_path}}" alt="">
+    </div>
 </div>
-<h1>You can download your image here</h1>
-<img src="{{qr_path}}" alt="">
+<a href="/" class="p-4 bg-indigo-500 text-white rounded-md">Back to home</a>
 {% endblock%}

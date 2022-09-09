@@ -1,21 +1,33 @@
-#header {
-    font-size: 24px;
-    font-weight: bold;
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
+.header {
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .grid-container {
-    display: grid;
-    grid-template-columns: auto auto auto;
-    column-gap: 3px;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  column-gap: 3px;
+  text-align: center;
+  place-items: center;
+}
+
+.grid-compute {
+  display: grid;
+  grid-template-columns: auto auto;
+  column-gap: 3px;
+  text-align: center;
+  place-items: center;
 }
 
 form {
-    padding: 5px;
+  padding: 5px;
+  text-align: center;
 }
 
 #options, #options label {
-    margin: 5px;
-    text-align: center;
+  margin: 5px;
+  text-align: center;
 }
 
 #submit {
@@ -25,25 +37,28 @@ form {
 img {
   width: 120px;
   height: 120px;
+  margin: 0px;
 }
 
-#options span {
+#options span, label span {
+  font-family: 'Montserrat', sans-serif;
   font-size: 16px;
+  font-weight: bold;
 }
 
 [type=radio] { 
-    position: absolute;
-    opacity: 0;
-    width: 0;
-    height: 0;
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
   }
   
-  /* IMAGE STYLES */
-  [type=radio] + img {
-    cursor: pointer;
-  }
-  
-  /* CHECKED STYLES */
-  [type=radio]:checked + img {
-    outline: 2px solid #f00;
-  }
+/* IMAGE STYLES */
+[type=radio] + img {
+  cursor: pointer;
+}
+
+/* CHECKED STYLES */
+[type=radio]:checked + img {
+  outline: 2px solid #f00;
+}

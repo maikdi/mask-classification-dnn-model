@@ -5,29 +5,34 @@
 {% endblock %}
 
 {% block content %}
-<span id="header">Choose Your Style</span>
-<form
-action="/render_style"
-method="get"
->
-<div id="options" class="grid-container">
-    {% for i in range(all_style_paths | length) %}
-    <div>
+<span class="header">Choose Your Style</span>
+<form action="/render_style" method="get">
+    <div id="options" class="grid-container">
+        {% for i in range(all_style_paths | length) %}
+        <div>
+            <label>
+                <span>{{all_styles[i]}}</span>
+                <input type="radio" name="neural-style" value="{{all_style_paths[i]}}" checked>
+                <img src="{{ all_style_paths[i] }}" alt="">
+            </label>
+        </div>
+        {% endfor %}
+    </div>
+    <span class="header">Choose the Computing Device</span>
+    <div class="grid-compute">
         <label>
-            <span>{{all_styles[i]}}</span>
-            <input type="radio" name="neural-style" value="{{all_style_paths[i]}}">
-            <img src="{{ all_style_paths[i] }}" alt="">
+            <span>GPU</span>
+            <input type="radio" name="computing-device" value="cuda" checked>
+            <img src="{{ url_for('static', filename='images/computing_devices/gpu.png') }}" alt="GPU">
+        </label>
+        <label>
+            <span>CPU</span>
+            <input type="radio" name="computing-device" value="cpu">
+            <img src="{{ url_for('static', filename='images/computing_devices/cpu.png') }}" alt="CPU">
         </label>
     </div>
-    {% endfor %}
-</div>
-<div id="submit" class="flex flex-col">
-    <button
-    type="submit"
-    class="p-4 bg-indigo-500 text-white rounded-md"
->
-    Langkah berikutnya
-</button>
-</div>
+    <div id="submit" class="flex flex-col">
+        <button type="submit" class="p-4 bg-indigo-500 text-white rounded-md">Langkah berikutnya</button>
+    </div>
 </form>
 {% endblock%}

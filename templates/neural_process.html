@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block stylesheet %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styling/neural_process.css') }}">
+{% endblock %}
+
+{% block content %}
+<span class="header">Wait for the AI to learn...</span>
+<input type="hidden" id="neural-style" value="{{chosen_style_path}}">
+<input type="hidden" id="computing-device" value="{{computing_device}}">
+<div id="progress" class="grid-container">
+</div>
+<a id="continue" href="/render_result" class="p-4 bg-indigo-500 text-white rounded-md" hidden>Continue to final result</a>
+{% endblock%}
+
+{% block script %}
+<script type="text/javascript" src="{{ url_for('static', filename='script/neural_process.js') }}"></script>
+{% endblock %}

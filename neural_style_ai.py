@@ -66,7 +66,7 @@ style_layers_default = ['conv_1', 'conv_2', 'conv_3', 'conv_4', 'conv_5']
 def get_style_model_and_losses(cnn, normalization_mean, normalization_std,
                                style_img, content_img,
                                content_layers=content_layers_default,
-                               style_layers=style_layers_default):
+                               style_layers=style_layers_default, device="cuda"):
     # normalization module
     normalization = Normalization(normalization_mean, normalization_std).to(device)
 
@@ -128,12 +128,12 @@ def get_input_optimizer(input_img):
     return optimizer
 
 def run_style_transfer(cnn, normalization_mean, normalization_std,
-                       content_img, style_img, input_img, num_steps=300,
-                       style_weight=1000000, content_weight=1):
+                       content_img, style_img, input_img, num_steps=200,
+                       style_weight=1000000, content_weight=1, device="cuda"):
     """Run the style transfer."""
     print('Building the style transfer model..')
     model, style_losses, content_losses = get_style_model_and_losses(cnn,
-        normalization_mean, normalization_std, style_img, content_img)
+        normalization_mean, normalization_std, style_img, content_img, device=device)
 
     # We want to optimize the input and not the model parameters so we
     # update all the requires_grad fields accordingly
@@ -168,13 +168,19 @@ def run_style_transfer(cnn, normalization_mean, normalization_std,
             loss.backward()
 
             run[0] += 1
-            if run[0] % 10 == 0:
+            if (run[0] % 20 == 0) or (run[0] == 1):
                 print("run {}:".format(run))
                 print('Style Loss : {:4f} Content Loss: {:4f}'.format(
                     style_score.item(), content_score.item()))
                 print()
                 # plt.figure()
-                imshow(input_img)
+                # Save the image
+                fig = plt.figure(frameon=False)
+                ax = plt.Axes(fig, [0., 0., 1., 1.])
+                ax.set_axis_off()
+                fig.add_axes(ax)
+                plt.imshow(np.rot90(input_img.detach().to("cpu").numpy()[0].T), origin="lower")
+                plt.savefig(f"./static/images/results/{run[0]}_neural.jpg", bbox_inches="tight", format="jpg")
             return style_score + content_score
 
         optimizer.step(closure)
@@ -185,12 +191,12 @@ def run_style_transfer(cnn, normalization_mean, normalization_std,
 
     return input_img
 
-device = "cuda"
+# device = "cuda"
 
-cnn_normalization_mean = torch.tensor([0.485, 0.456, 0.406]).to(device)
-cnn_normalization_std = torch.tensor([0.229, 0.224, 0.225]).to(device)
-# create a module to normalize input image so we can easily put it in a
-# nn.Sequential
+# cnn_normalization_mean = torch.tensor([0.485, 0.456, 0.406]).to(device)
+# cnn_normalization_std = torch.tensor([0.229, 0.224, 0.225]).to(device)
+# # create a module to normalize input image so we can easily put it in a
+# # nn.Sequential
 class Normalization(nn.Module):
     def __init__(self, mean, std):
         super(Normalization, self).__init__()
@@ -204,17 +210,17 @@ class Normalization(nn.Module):
         # normalize img
         return (img - self.mean) / self.std
     
-cnn = models.vgg19(pretrained=True).features.to(device).eval()
+# cnn = models.vgg19(pretrained=True).features.to(device).eval()
 
-# desired size of the output image
-imsize = 256 if torch.cuda.is_available() else 256 
+# # desired size of the output image
+# imsize = 256 if torch.cuda.is_available() else 256 
 
-loader = transforms.Compose([
-    transforms.Resize(imsize),  # scale imported image
-    transforms.ToTensor()])  # transform it into a torch tensor
+# loader = transforms.Compose([
+#     transforms.Resize(imsize),  # scale imported image
+#     transforms.ToTensor()])  # transform it into a torch tensor
 
 
-def image_loader(image_name):
+def image_loader(image_name, loader, device):
     image = Image.open(image_name)
     # fake batch dimension required to fit network's input dimensions
     image = loader(image).unsqueeze(0)
@@ -233,11 +239,11 @@ def image_loader(image_name):
 
 # REPLACE THIS WITH WEBCAM IMAGE
 
-unloader = transforms.ToPILImage()  # reconvert into PIL image
+# unloader = transforms.ToPILImage()  # reconvert into PIL image
 
-plt.ion()
+# plt.ion()
 
-def imshow(tensor, title=None):
+def imshow(tensor, unloader, title=None):
     image = tensor.cpu().clone()  # we clone the tensor to not do changes on it
     image = image.squeeze(0)      # remove the fake batch dimension
     image = unloader(image)
@@ -247,35 +253,51 @@ def imshow(tensor, title=None):
     # plt.pause(0.001) # pause a bit so that plots are updated
 
 
-def render_all_image(chosen_style, image_path):
-    content_img = image_loader(image_path)
-    chosen_style = image_loader('.'+chosen_style)
+def render_all_image(chosen_style, image_path, computing_unit):
+    device = computing_unit
+
+    cnn_normalization_mean = torch.tensor([0.485, 0.456, 0.406]).to(device)
+    cnn_normalization_std = torch.tensor([0.229, 0.224, 0.225]).to(device)
+    cnn = models.vgg19(pretrained=True).features.to(device).eval()
+
+    # desired size of the output image
+    imsize = 256 if torch.cuda.is_available() else 256 
+
+    loader = transforms.Compose([
+        transforms.Resize(imsize),  # scale imported image
+        transforms.ToTensor()])  # transform it into a torch tensor
+
+    unloader = transforms.ToPILImage()  # reconvert into PIL image
+
+    plt.ion()
+
+    content_img = image_loader(image_path, loader, device)
+    chosen_style = image_loader('.'+chosen_style, loader, device)
     style_img = transforms.Resize(content_img.shape[2:])(chosen_style)
     assert style_img.size() == content_img.size(), \
     "we need to import style and content images of the same size"
 
     input_img = content_img.clone()
     # plt.figure()
-    imshow(input_img, title='Input Image')
+    imshow(input_img, unloader, title='Input Image')
 
     start = time.time()
     output = run_style_transfer(cnn, cnn_normalization_mean, cnn_normalization_std,
-                                content_img, style_img, input_img)
+                                content_img, style_img, input_img, device=device)
     end = time.time()
 
     # plt.figure()
 
-    imshow(output, title='Output Image')
+    imshow(output, unloader, title='Output Image')
     # sphinx_gallery_thumbnail_number = 4
     plt.ioff()
     # plt.show()
     print('time',end-start)
 
     # Save the image
-    fig = plt.figure(frameon=False)
-    ax = plt.Axes(fig, [0., 0., 1., 1.])
-    ax.set_axis_off()
-    fig.add_axes(ax)
-
-    plt.imshow(np.rot90(input_img.detach().to("cpu").numpy()[0].T), origin="lower")
-    plt.savefig("./static/images/results/neural.jpg", bbox_inches="tight", format="jpg")
+    # fig = plt.figure(frameon=False)
+    # ax = plt.Axes(fig, [0., 0., 1., 1.])
+    # ax.set_axis_off()
+    # fig.add_axes(ax)
+    # plt.imshow(np.rot90(input_img.detach().to("cpu").numpy()[0].T), origin="lower")
+    # plt.savefig("./static/images/results/999_neural.jpg", bbox_inches="tight", format="jpg")

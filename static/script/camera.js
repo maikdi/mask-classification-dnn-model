@@ -1,6 +1,6 @@
 // Configure a few settings and attach camera
 Webcam.set({
-    width: 320, height: 240, image_format: 'jpeg', jpeg_quality: 90
+    width: 800, height: 600, image_format: 'jpeg', jpeg_quality: 90
 });
 
 Webcam.attach('#my_camera');
@@ -21,9 +21,11 @@ function take_snapshot() {
         // display results in page
         // document.getElementById('results').innerHTML = '<img src="'+data_uri+'"/>';
         var chosen_style = document.getElementById('neural-style').value
+        var computing_device = document.getElementById('computing-device').value
         const formData = new FormData();
         formData.append("webcam", data_uri);
         formData.append("neural-style", chosen_style)
+        formData.append("computing-device", computing_device)
 
         // After snap, image will be sent along with the desired style
         // I'm not using Webcam.upload since it only uploads the image without any other data.

@@ -5,11 +5,13 @@
 {% endblock %}
 
 {% block content %}
+<h1>Take your picture!</h1>
 <div id="my_camera">
     
 </div>
-<input id="snapshot" type="button" value="snapshot" onClick="take_snapshot()">
+<input id="snapshot" class="p-4 bg-indigo-500 text-white rounded-md" type="button" value="Upload Photo" onClick="take_snapshot()">
 <input type="hidden" id="neural-style" value="{{chosen_style_path}}">
+<input type="hidden" id="computing-device" value="{{computing_device}}">
 <input id="image" type="hidden" name="image" value="">
 
 <div id="results"></div>
