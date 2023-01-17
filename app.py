@@ -77,6 +77,7 @@ def show_rendered_image():
 
 @app.route('/render_result')
 def render_result():
+    before_img = "./static/images/webcam.jpg"
     result_path = url_for('static', filename='images/results/220_neural.jpg')
     qr_path = url_for('static', filename='images/results/qr_results.png')
     #Creating an instance of qrcode
@@ -91,7 +92,7 @@ def render_result():
     img = qr.make_image(fill='black', back_color='white')
     img.save('./static/images/results/qr_results.png')
     
-    return render_template("neural_results.html", result_path=result_path, qr_path=qr_path)
+    return render_template("neural_results.html", after_image=result_path, before_img=before_img, qr_path=qr_path)
 
 @app.route('/render_process')
 def render_process():

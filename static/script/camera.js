@@ -19,7 +19,7 @@ function take_snapshot() {
     // take snapshot and get image data
     Webcam.snap(function (data_uri) {
         // display results in page
-        // document.getElementById('results').innerHTML = '<img src="'+data_uri+'"/>';
+        document.getElementById('my_camera').innerHTML = '<img src="' + data_uri + '"/>';
         var chosen_style = document.getElementById('neural-style').value
         var computing_device = document.getElementById('computing-device').value
         const formData = new FormData();

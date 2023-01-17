@@ -5,15 +5,20 @@
 {% endblock %}
 
 {% block content %}
+<h1>Here is the before/after result of the Neural Style Transfer</h1>
 <div class="grid-container">
     <div>
-        <h1>Here is the end result of the Neural Style Transfer</h1>
-        <img src="{{result_path}}" alt="" width="480">
+        <h1>Before</h1>
+        <img src="{{before_img}}" alt="" width="480">
     </div>
     <div>
-        <h1>You can download your image here!</h1>
-        <img src="{{qr_path}}" alt="">
+        <h1>After</h1>
+        <img src="{{after_image}}" alt="" width="480">
     </div>
+</div>
+<div>
+    <h1>You can download your image here!</h1>
+    <img src="{{qr_path}}" alt="">
 </div>
 <a href="/" class="p-4 bg-indigo-500 text-white rounded-md">Back to home</a>
 {% endblock%}

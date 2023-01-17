@@ -18,6 +18,7 @@ function take_snapshot() {
 
     // take snapshot and get image data
     Webcam.snap(function (data_uri) {
+        document.getElementById('my_camera').innerHTML = '<img src="' + data_uri + '"/>';
         const formData = new FormData();
         formData.append("webcam", data_uri);
 
