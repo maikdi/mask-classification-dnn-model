@@ -248,8 +248,8 @@ def imshow(tensor, unloader, title=None):
     image = image.squeeze(0)      # remove the fake batch dimension
     image = unloader(image)
     # plt.imshow(image)
-    if title is not None:
-        plt.title(title)
+    # if title is not None:
+    #     plt.title(title)
     # plt.pause(0.001) # pause a bit so that plots are updated
 
 
@@ -269,7 +269,7 @@ def render_all_image(chosen_style, image_path, computing_unit):
 
     unloader = transforms.ToPILImage()  # reconvert into PIL image
 
-    plt.ion()
+    # plt.ion()
 
     content_img = image_loader(image_path, loader, device)
     chosen_style = image_loader('.'+chosen_style, loader, device)
@@ -279,7 +279,7 @@ def render_all_image(chosen_style, image_path, computing_unit):
 
     input_img = content_img.clone()
     # plt.figure()
-    imshow(input_img, unloader, title='Input Image')
+    # imshow(input_img, unloader, title='Input Image')
 
     start = time.time()
     output = run_style_transfer(cnn, cnn_normalization_mean, cnn_normalization_std,
@@ -288,9 +288,9 @@ def render_all_image(chosen_style, image_path, computing_unit):
 
     # plt.figure()
 
-    imshow(output, unloader, title='Output Image')
+    # imshow(output, unloader, title='Output Image')
     # sphinx_gallery_thumbnail_number = 4
-    plt.ioff()
+    # plt.ioff()
     # plt.show()
     print('time',end-start)
 
